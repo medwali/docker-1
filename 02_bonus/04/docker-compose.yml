@@ -1,0 +1,40 @@
+version: "3.3"
+
+services: 
+    prestashop:
+        image: "prestashop/prestashop"
+        depends_on:
+            - mysql_database
+        networks:
+            - db_net
+        environment:
+            - "DB_SERVER=mysql_db"
+            - "DB_PASSWD=roottoor" 
+            - "PS_FOLDER_ADMIN=shopadmin"
+            - "PS_FOLDER_INSTALL=installpresta"
+        ports:
+            - "8000:80"
+        container_name: cool-store
+    mysql_database:
+        image : "mysql:5.7"
+        container_name: mysql_db
+        networks:
+            - db_net
+        environment:
+            - "MYSQL_ROOT_PASSWORD=roottoor"
+    phpmyadmin:
+        image: "phpmyadmin/phpmyadmin"
+        networks:
+            - db_net
+        depends_on:
+            - mysql_database
+        environment:
+            - "MYSQL_ROOT_PASSWORD=roottoor"
+            - "MYSQL_USER=root"
+            - "MYSQL_PASSWORD=roottoor"
+        ports:
+            - "8888:80"
+
+networks:
+    db_net:
+

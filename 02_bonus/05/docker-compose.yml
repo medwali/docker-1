@@ -1,0 +1,31 @@
+version : "3.3"
+
+services:
+    ghost-blog:
+        image: "ghost:latest"
+        depends_on:
+            - maria_db
+        ports:
+            - "8800:2368"
+        restart: on-failure
+        environment:
+            url: http://192.168.99.100:8800/
+            database__client: mysql 
+            database__connection__host: maria_db
+            database__connection__port: 3306
+            database__connection__user: root
+            database__connection__password: root
+            database__connection__database: ghostdb
+    maria_db:
+        image: "mariadb:latest"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: ghostdb
+    phpmyadm:
+        image: "phpmyadmin/phpmyadmin"
+        depends_on:
+            - maria_db
+        ports:
+            - "8080:80"
+        environment:
+            PMA_HOST: maria_db

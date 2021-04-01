@@ -1,0 +1,1 @@
+eval docker service logs -f  $(docker service ps engineering-bay |sed -n 2p| cut -f1 -d" ")
